@@ -195,7 +195,7 @@ class LoginPageBottom extends StatelessWidget {
                         filled: true,
                         fillColor: Colors.white70,
                         hintText: 'Username',
-                        icon: Icon(Icons.assignment_ind),
+                        icon: Icon(Icons.assignment_ind,color: Colors.pink,),
                       ),
                       validator: (value) => value.isEmpty
                           ? "Username field can't be empty"
@@ -210,7 +210,7 @@ class LoginPageBottom extends StatelessWidget {
                         filled: true,
                         fillColor: Colors.white70,
                         hintText: 'Password',
-                        icon: Icon(Icons.lock),
+                        icon: Icon(Icons.lock,color: Colors.pink,),
                       ),
                       obscureText: true,
                       validator: (value) => value.isEmpty
