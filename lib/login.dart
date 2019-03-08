@@ -52,8 +52,40 @@ class _LoginPageTopState extends State<LoginPageTop> {
         FirebaseUser user = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: _username, password: _password);
         print('Signed in: ${user.uid}');
+        showDialog(
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('User Signed-In'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      formkey.currentState.reset();
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              );
+            },
+            context: context);
       } catch (e) {
         print('Errr : $e');
+        showDialog(
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('User Sign-In Failed !'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      formkey.currentState.reset();
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              );
+            },
+            context: context);
       }
     }
   }
@@ -100,6 +132,7 @@ class _LoginPageTopState extends State<LoginPageTop> {
                               fillColor: Colors.white70,
                               hintText: 'Username',
                               icon: Icon(Icons.assignment_ind,color: Colors.white,),
+                              errorStyle: TextStyle(color: Colors.white,),
                             ),
                             validator: (value) => value.isEmpty
                                 ? "Username field can't be empty"
@@ -113,8 +146,10 @@ class _LoginPageTopState extends State<LoginPageTop> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white70,
-                              hintText: 'Password',
+                              hintText: 'Password(Length>=6)',
+                              //helperText: 'Keep it short, this is just a demo.',
                               icon: Icon(Icons.lock,color: Colors.white,),
+                              errorStyle: TextStyle(color: Colors.white,),
                             ),
                             obscureText: true,
                             validator: (value) => value.isEmpty
@@ -164,12 +199,28 @@ class LoginPageBottom extends StatelessWidget {
     return false;
   }
 
-  void validate_submit()async{
+  void validate_submit(BuildContext context)async{
     if(validate_save()){
       try {
         FirebaseUser user = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: _username, password: _password);
         print('Registered User: ${user.uid}');
+        showDialog(
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('User Registered'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      formkey.currentState.reset();
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              );
+            },
+            context: context);
       }catch(e){
         print('Errr : $e');
       }
@@ -196,7 +247,8 @@ class LoginPageBottom extends StatelessWidget {
                         fillColor: Colors.white70,
                         hintText: 'Username',
                         icon: Icon(Icons.assignment_ind,color: Colors.pink,),
-                      ),
+                        errorStyle: TextStyle(color: Colors.white,),
+                    ),
                       validator: (value) => value.isEmpty
                           ? "Username field can't be empty"
                           : null,
@@ -209,8 +261,9 @@ class LoginPageBottom extends StatelessWidget {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white70,
-                        hintText: 'Password',
+                        hintText: 'Password(Length>=6)',
                         icon: Icon(Icons.lock,color: Colors.pink,),
+                        errorStyle: TextStyle(color: Colors.pink,),
                       ),
                       obscureText: true,
                       validator: (value) => value.isEmpty
@@ -222,9 +275,9 @@ class LoginPageBottom extends StatelessWidget {
                       height: 20.0,
                     ),
                     RaisedButton(
-                      onPressed: validate_submit,
+                      onPressed:()=> validate_submit(context),
                       textColor: Colors.white,
-                      padding: EdgeInsets.only(left: 8.0,right: 8.0),
+                      padding: EdgeInsets.only(left: 10.0,right: 10.0),
                       color: Colors.pink,
                       splashColor: Colors.transparent,
                       child: Text('Register',style: TextStyle(fontSize: 20.0),),
